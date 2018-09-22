@@ -7,7 +7,7 @@ The extracted links will be written to files for easy use with various downloade
 
 ## How to use
 1. Download the ChromeDriver from: http://chromedriver.chromium.org/downloads
-2. If on Windows, download the precompiled [executable](https://github.com/itaybia/kissanime_py_downloader/releases/download/1.0.0/url_fetcher.exe). Or use the python script directly as in (3)
+2. If on Windows, download the precompiled [executable](https://github.com/itaybia/kissanime_py_downloader/releases/download/1.0.1/url_fetcher.exe). Or use the python script directly as in (3)
 3. If you want to use the python 2.7 script directly, then download the "url_fetcher.py" python script and install all the required packages:
     * pip install selenium
     * pip install beautifulsoup4
