@@ -144,7 +144,7 @@ print( " output_folder {}\n chrome_driver_path {}\n series_url {}\n user_name {}
 if args.first_index < 1:
     print "first_index must be a number of an episode to download"
     exit(1)
-if args.last_index < 0:
+if args.last_index and args.last_index < 0:
     print "last_index must be a number of an episode to download, or 0 to download all from first_index and up"
     exit(1)
 if not args.user_name or not args.password or not args.series_url:
