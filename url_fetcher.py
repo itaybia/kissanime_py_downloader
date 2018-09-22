@@ -44,6 +44,7 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
             links.append((href + '&s=rapidvideo', episode_tag.text))
         except Exception as e:
             pass
+    links.reverse()
     print links
 
     # extract the rapidvideo download page from the kissanime page
@@ -92,7 +93,7 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
                             file_name = episode_text + ' ' + str(highest_res) + 'p.mp4'
                             file_name = re.sub(r'[^A-Za-z0-9-._~()!*:@,; ]', '', file_name).replace(' ', '%20')
                             highest_href = highest_href[:name_index_in_href + 6] + file_name
-                    download_links.append(highest_href)
+                    download_links.append((highest_href, episode_text))
                     break
         except Exception as e:
             pass
@@ -102,9 +103,23 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
     return download_links
 
 
+def write_to_text_file(links_and_episodes, links_folder):
+    with open(join(links_folder, 'download_links.txt'), mode='w') as links_file:
+        for link, episode_name in links_and_episodes:
+            links_file.write(link + '\n')
+
+
+def write_to_html_file(links_and_episodes, links_folder):
+    with open(join(links_folder, 'download_links.html'), mode='w') as links_file:
+        links_file.write('<!DOCTYPE html>\n<html>\n<body link="blue">\n')
+        for link, episode_name in links_and_episodes:
+            links_file.write('<p><a href=\"' + link + '\">' + episode_name + '</a></p>\n')
+        links_file.write('</body>\n</html>\n')
+
+
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-out", "--output_file", help="absolute path of output file. default is \"download_links.txt\" in executable's folder")
+parser.add_argument("-out", "--output_folder", help="folder to create teh links files in. default is in the executable's folder")
 parser.add_argument("-chrome_drv", "--chrome_driver_path", help="absolute path of the chrome driver executable file")
 parser.add_argument("-url", "--series_url", help="series URL")
 parser.add_argument("-user", "--user_name", help="kissanime site user name")
@@ -115,8 +130,8 @@ parser.add_argument("-rename", "--rename_files", help="when given, the downloade
 
 args = parser.parse_args()
 
-print( " output_file {}\n chrome_driver_path {}\n series_url {}\n user_name {}\n password {}\n first_index {}\n last_index {}\n rename_files {}".format(
-        args.output_file,
+print( " output_folder {}\n chrome_driver_path {}\n series_url {}\n user_name {}\n password {}\n first_index {}\n last_index {}\n rename_files {}".format(
+        args.output_folder,
         args.chrome_driver_path,
         args.series_url,
         args.user_name,
@@ -139,11 +154,12 @@ if not os.path.exists(args.chrome_driver_path):
     print "chrome_driver_path must be the path to the existing chrome driver executable file. if not downloaded, please download from http://chromedriver.chromium.org/downloads"
     exit(1)
 
-download_links = get_download_links_for_url(args.series_url, args.first_index, args.last_index, args.user_name, args.password, args.rename_files, args.chrome_driver_path)
-print download_links
-links_file_path = args.output_file if args.output_file else join(os.getcwd(), 'download_links.txt')
-os.makedirs(os.path.dirname(links_file_path))
-with open(links_file_path, mode='w') as links_file:
-    links_file.write('\n'.join(download_links))
+download_links_and_episodes = get_download_links_for_url(args.series_url, args.first_index, args.last_index, args.user_name, args.password, args.rename_files, args.chrome_driver_path)
+print download_links_and_episodes
+links_folder_path = os.path.normpath(args.output_folder if args.output_folder else os.getcwd())
+if not os.path.exists(links_folder_path):
+    os.makedirs(links_folder_path)
+write_to_text_file(download_links_and_episodes, links_folder_path)
+write_to_html_file(download_links_and_episodes, links_folder_path)
 
-print "download links written to: " + links_file_path
+print "download links written to: " + links_folder_path
