@@ -14,9 +14,9 @@ The extracted links will be written to files for easy use with various downloade
 4. Register a user on kissanime.ru
 5. Open the page of the series you want to download and copy its URL
 6. In the command line run:
-    * For executable: url_fetcher.exe -user < USER NAME > -pass < PASSWORD > -url < SERIES PAGE URL from step 5 > -first < FIRST EPISODE TO DOWNLOAD > -last < LAST EPISODE TO DOWNLOAD > -rename -out < OUTPUT FOLDER >
-    * For python: python url_fetcher.py -user < USER NAME > -pass < PASSWORD > -url < SERIES PAGE URL from step 5 > -first < FIRST EPISODE TO DOWNLOAD > -last < LAST EPISODE TO DOWNLOAD > -rename -out < OUTPUT FOLDER >
-    * Example: url_fetcher.exe -user some_user -pass 1234 -url http://kissanime.ru/Anime/Wolf-s-Rain -first 5 -last 15 -rename -out C:\Downloads
+    * For executable: url_fetcher.exe -user < USER NAME > -pass < PASSWORD > -url < SERIES PAGE URL from step 5 > -first < FIRST EPISODE TO DOWNLOAD > -last < LAST EPISODE TO DOWNLOAD > -rename -out < OUTPUT FOLDER > -chrome_drv < ChromeDriver exe path >
+    * For python: python url_fetcher.py -user < USER NAME > -pass < PASSWORD > -url < SERIES PAGE URL from step 5 > -first < FIRST EPISODE TO DOWNLOAD > -last < LAST EPISODE TO DOWNLOAD > -rename -out < OUTPUT FOLDER > -chrome_drv < ChromeDriver exe path >
+    * Example: url_fetcher.exe -user some_user -pass 1234 -url http://kissanime.ru/Anime/Wolf-s-Rain -first 5 -last 15 -rename -out C:\Downloads -chrome_drv C:\ChromeDriver\chromedriver.exe
     * **-last** is not mandatory. If not given, all episodes after first will be downloaded.
     * **-rename** is not mandatory. If given, it changes the links to have the downloaded files have the names as in the series page.
     * **-out** is not mandatory. If given, it will create the files containing the links in the folder given. if not given, they will be created in the same folder as the folder you are running the command from.
