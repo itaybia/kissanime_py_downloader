@@ -26,6 +26,11 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
     user_element.send_keys(password)
     user_element = driver.find_element_by_id('btnSubmit')
     user_element.click()
+    error_element = driver.find_elements_by_class_name("error")
+    if error_element:
+        print "Login Failed!"
+        driver.close()
+        exit(1)
 
     # go to the series page to find all the rapidvideo page URLs inside kissanime
     driver.get(root_url)
@@ -43,7 +48,7 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
             print 'found link: ' + href
             links.append((href + '&s=rapidvideo', episode_tag.text))
         except Exception as e:
-            pass
+            print "Exception while trying to get rapidvideo kissanime link for episode element " + str(episode_tag) + ". Continuing to next episode. Exception: " + str(e)
     links.reverse()
     print links
 
@@ -58,7 +63,7 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
             rapidvideo_links.append((href, episode_text))
             print href
         except Exception as e:
-            pass
+            print "Exception while trying to get actual rapidvideo link for episode " + episode_text + ". Continuing to next episode. Exception: " + str(e)
 
     # find the link to the file with the highest resolution (no need for the login or cookies anymore, so no need for webdriver which is slow)
     download_links = []
@@ -96,7 +101,7 @@ def get_download_links_for_url(root_url, min_episode, max_episode, username, pas
                     download_links.append((highest_href, episode_text))
                     break
         except Exception as e:
-            pass
+            print "Exception while trying to get download link for episode " + episode_text + ". Continuing to next episode. Exception: " + str(e)
 
     driver.close()
 
